@@ -1,0 +1,75 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| MonBlog            |
+| agenda             |
+| boldyreff          |
+| coursexo           |
+| ecole2             |
+| entreprise         |
+| mysql              |
+| pannel             |
+| performance_schema |
+| test               |
+| test2              |
+| veto               |
++--------------------+
+13 rows in set (0,00 sec)
+
+mysql> select count(c.numv), nomv, prenomv from consultation c
+    -> inner join veterinaire v on c.numv=v.numv
+    -> group by c.numv;
++---------------+-------+----------+
+| count(c.numv) | nomv  | prenomv  |
++---------------+-------+----------+
+|             6 | Carre | Paul     |
+|             5 | Carre | Violette |
+|             6 | Rhin  | Michel   |
++---------------+-------+----------+
+3 rows in set (0,01 sec)
+
+mysql> select nomr, count(a.numa) from race R
+    -> left join animal.a on  R.numR group by a.NumR;
+ERROR 1146 (42S02): Table 'animal.a' doesn't exist
+mysql> select nomr, count(a.numa) from race R
+    -> left join animal a on  R.numR group by a.NumR;
++--------------+---------------+
+| nomr         | count(a.numa) |
++--------------+---------------+
+| Teckel sympa |             9 |
+| Teckel sympa |            27 |
+| Teckel sympa |             9 |
+| Teckel sympa |            36 |
+| Teckel sympa |             9 |
+| Teckel sympa |             9 |
+| Teckel sympa |             9 |
+| Teckel sympa |             9 |
+| Teckel sympa |             9 |
++--------------+---------------+
+9 rows in set (0,00 sec)
+
+mysql> select distinct nomv, prenomv, from veterinaire v inner join consultation c on v.numv=c.numv where prix >(select avg(prix) from consultation);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from veterinaire v inner join consultation c on v.numv=c.numv where prix >(selec' at line 1
+mysql> select distinct nomv, prenomv from veterinaire v inner join consultation c on v.numv=c.numv where prix >(select avg(prix) from consultation);
+ERROR 1054 (42S22): Unknown column 'prix' in 'where clause'
+mysql> select distinct nomv, prenomv from veterinaire v inner join consultation c on v.numv=c.numv where prixc >(select avg(prixc) from consultation);
++-------+----------+
+| nomv  | prenomv  |
++-------+----------+
+| Carre | Paul     |
+| Carre | Violette |
+| Rhin  | Michel   |
++-------+----------+
+3 rows in set (0,00 sec)
+
+mysql> select *from Animal Where NomA like "% %";
++------+------+------+-----------+------------+----------+
+| NUMA | NUMP | NUMR | NOMA      | DATENAISSA | TATOUAGE |
++------+------+------+-----------+------------+----------+
+|    7 |    2 |   14 | Jeune alf | NULL       | NULL     |
++------+------+------+-----------+------------+----------+
+1 row in set (0,00 sec)
+
+mysql> 
